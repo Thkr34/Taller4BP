@@ -1,3 +1,6 @@
+// Bastián Felipe Perines Flores
+// 22.386.978-5
+// ICCI
 package dominio;
 
 import Visitor.Visitor;
@@ -22,12 +25,19 @@ public class Pokemon extends Carta {
 
 	@Override
 	public String toString() {
-		return "Pokemon "+ nombre + " [dmg=" + dmg + ", energias=" + energias + "]";
+		return "Pokemon "+ nombre + " " + rareza + " [dmg=" + dmg + ", energias=" + energias + "]";
 	}
 
 	@Override
 	public int aceptarVisita(Visitor v) {
 		return v.visitarPokemon(this);
 	}
-	
+
+	public void setDmg(int dmg) {
+		this.dmg = dmg;
+	}
+
+	public void setEnergias(int energias) {
+		this.energias = energias;
+	}
 }

@@ -1,10 +1,13 @@
+// Bastián Felipe Perines Flores
+// 22.386.978-5
+// ICCI
 package dominio;
 import Visitor.*;
 
 public abstract class Carta {
 	protected String nombre;
-	private int rareza;
-	private String tipo;
+	protected int rareza;
+	protected String tipo;
 	
 	public Carta(String nombre, int rareza, String tipo) {
 		super();

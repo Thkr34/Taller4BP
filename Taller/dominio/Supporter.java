@@ -1,3 +1,6 @@
+// Bastián Felipe Perines Flores
+// 22.386.978-5
+// ICCI
 package dominio;
 
 import Visitor.Visitor;
@@ -16,12 +19,15 @@ public class Supporter extends Carta {
 
 	@Override
 	public String toString() {
-		return "Supporter  "+ nombre + " [efectoPorTurno=" + efectoPorTurno + "]";
+		return "Supporter  "+ nombre + " " + rareza + " [efectoPorTurno=" + efectoPorTurno + "]";
 	}
 
 	@Override
 	public int aceptarVisita(Visitor v) {
 		return v.visitarSupporter(this);
 	}
-	
+
+	public void setEfectoPorTurno(int efectoPorTurno) {
+		this.efectoPorTurno = efectoPorTurno;
+	}
 }

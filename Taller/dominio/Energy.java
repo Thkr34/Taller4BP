@@ -1,3 +1,6 @@
+// Bastián Felipe Perines Flores
+// 22.386.978-5
+// ICCI
 package dominio;
 
 import Visitor.Visitor;
@@ -16,7 +19,7 @@ public class Energy extends Carta {
 
 	@Override
 	public String toString() {
-		return "Energy " + nombre +" [elemento=" + elemento + "]";
+		return "Energy " + nombre + " " + rareza + " [elemento=" + elemento + "]";
 	}
 
 	@Override
@@ -24,6 +27,8 @@ public class Energy extends Carta {
 		return v.visitarEnergy(this);
 		
 	}
-	
-	
+
+	public void setElemento(String elemento) {
+		this.elemento = elemento;
+	}
 }
