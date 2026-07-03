@@ -1,5 +1,7 @@
 package dominio;
 
+import Visitor.Visitor;
+
 public class Supporter extends Carta {
 	private int efectoPorTurno;
 
@@ -15,6 +17,11 @@ public class Supporter extends Carta {
 	@Override
 	public String toString() {
 		return "Supporter [efectoPorTurno=" + efectoPorTurno + "]";
+	}
+
+	@Override
+	int aceptarVisita(Visitor v) {
+		return v.visitarSupporter(this);
 	}
 	
 }

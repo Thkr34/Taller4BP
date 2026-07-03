@@ -1,5 +1,7 @@
 package dominio;
 
+import Visitor.Visitor;
+
 public class Pokemon extends Carta {
 	private int dmg;
 	private int energias;
@@ -21,6 +23,11 @@ public class Pokemon extends Carta {
 	@Override
 	public String toString() {
 		return "Pokemon [dmg=" + dmg + ", energias=" + energias + "]";
+	}
+
+	@Override
+	int aceptarVisita(Visitor v) {
+		return v.visitarPokemon(this);
 	}
 	
 }

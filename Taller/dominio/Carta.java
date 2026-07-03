@@ -1,4 +1,5 @@
 package dominio;
+import Visitor.*;
 
 public abstract class Carta {
 	private String nombre;
@@ -28,6 +29,8 @@ public abstract class Carta {
 	public String toString() {
 		return "Carta [nombre=" + nombre + ", rareza=" + rareza + ", tipo=" + tipo + "]";
 	}
+	
+	abstract int aceptarVisita(Visitor v);
 	
 	
 }

@@ -1,5 +1,7 @@
 package dominio;
 
+import Visitor.Visitor;
+
 public class Energy extends Carta {
 	private String elemento;
 
@@ -15,6 +17,12 @@ public class Energy extends Carta {
 	@Override
 	public String toString() {
 		return "Energy [elemento=" + elemento + "]";
+	}
+
+	@Override
+	int aceptarVisita(Visitor v) {
+		return v.visitarEnergy(this);
+		
 	}
 	
 	

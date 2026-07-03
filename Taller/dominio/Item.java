@@ -1,5 +1,7 @@
 package dominio;
 
+import Visitor.Visitor;
+
 public class Item extends Carta {
 	private int buff;
 
@@ -15,6 +17,12 @@ public class Item extends Carta {
 	@Override
 	public String toString() {
 		return "Item [buff=" + buff + "]";
+	}
+
+	@Override
+	int aceptarVisita(Visitor v) {
+		return v.visitarItem(this);
+		
 	}
 	
 }
