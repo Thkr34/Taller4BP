@@ -16,11 +16,11 @@ public class Supporter extends Carta {
 
 	@Override
 	public String toString() {
-		return "Supporter [efectoPorTurno=" + efectoPorTurno + "]";
+		return "Supporter  "+ nombre + " [efectoPorTurno=" + efectoPorTurno + "]";
 	}
 
 	@Override
-	int aceptarVisita(Visitor v) {
+	public int aceptarVisita(Visitor v) {
 		return v.visitarSupporter(this);
 	}
 	

@@ -9,6 +9,7 @@ public class SistemaImpl implements ISistema {
 	private static SistemaImpl instance = null;
 	private static Factory creadorCartas = new FactoryCartas();
 	private static Visitor calculadorPoder = new CalculadorPoder();
+	private static AdministradorEstrategias AE = new AdministradorEstrategias();
 	
 	private static ArrayList<Carta> coleccion = new ArrayList<>();
 

@@ -16,11 +16,11 @@ public class Item extends Carta {
 
 	@Override
 	public String toString() {
-		return "Item [buff=" + buff + "]";
+		return "Item "+ nombre+ " [buff=" + buff + "]";
 	}
 
 	@Override
-	int aceptarVisita(Visitor v) {
+	public int aceptarVisita(Visitor v) {
 		return v.visitarItem(this);
 		
 	}

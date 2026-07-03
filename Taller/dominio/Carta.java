@@ -2,7 +2,7 @@ package dominio;
 import Visitor.*;
 
 public abstract class Carta {
-	private String nombre;
+	protected String nombre;
 	private int rareza;
 	private String tipo;
 	
@@ -30,7 +30,7 @@ public abstract class Carta {
 		return "Carta [nombre=" + nombre + ", rareza=" + rareza + ", tipo=" + tipo + "]";
 	}
 	
-	abstract int aceptarVisita(Visitor v);
+	public abstract int aceptarVisita(Visitor v);
 	
 	
 }

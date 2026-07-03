@@ -16,11 +16,11 @@ public class Energy extends Carta {
 
 	@Override
 	public String toString() {
-		return "Energy [elemento=" + elemento + "]";
+		return "Energy " + nombre +" [elemento=" + elemento + "]";
 	}
 
 	@Override
-	int aceptarVisita(Visitor v) {
+	public int aceptarVisita(Visitor v) {
 		return v.visitarEnergy(this);
 		
 	}

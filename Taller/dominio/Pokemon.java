@@ -22,11 +22,11 @@ public class Pokemon extends Carta {
 
 	@Override
 	public String toString() {
-		return "Pokemon [dmg=" + dmg + ", energias=" + energias + "]";
+		return "Pokemon "+ nombre + " [dmg=" + dmg + ", energias=" + energias + "]";
 	}
 
 	@Override
-	int aceptarVisita(Visitor v) {
+	public int aceptarVisita(Visitor v) {
 		return v.visitarPokemon(this);
 	}
 	
