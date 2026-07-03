@@ -2,20 +2,12 @@
 // 22.386.978-5
 // ICCI
 package logica;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 import java.io.File;
 import java.util.*;
-
-import javax.swing.*;
-
-import Visitor.CalculadorPoder;
 import dominio.*;
 
 public class App {
-	
 	private static SistemaImpl sistema = SistemaImpl.getInstance();
 	
 	public static void main(String[] args) {

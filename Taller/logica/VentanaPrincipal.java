@@ -1,7 +1,12 @@
+// Bastián Felipe Perines Flores
+// 22.386.978-5
+// ICCI
 package logica;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -10,10 +15,11 @@ import Visitor.CalculadorPoder;
 import dominio.*;
 
 public class VentanaPrincipal extends JFrame {
+	private JPanel panelCartasVisual; 
 	public VentanaPrincipal() {
         setTitle("Pokémon TCG - Colección");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 600); // Tamaño sugerido para visualización amplia
+        setSize(800, 600); 
 
         JTabbedPane pestañas = new JTabbedPane();
         pestañas.addTab("Administración", crearPanelAdmin());
@@ -23,9 +29,43 @@ public class VentanaPrincipal extends JFrame {
         setVisible(true);
     }
 	private Component crearPanelColeccion() {
-		JPanel panel = new JPanel();
-		actualizarVistaColeccion(panel);
-		return panel;
+		JPanel panelPrincipal = new JPanel(new BorderLayout());
+		this.panelCartasVisual = new JPanel(new GridLayout(0, 3, 10, 10)); 
+		
+		JPanel barraOrden = new JPanel();
+	    JButton btnNombre = new JButton("Nombre");
+	    JButton btnRareza = new JButton("Rareza");
+	    JButton btnPoder = new JButton("Poder");
+	    
+	    btnNombre.addActionListener(e -> {
+	        SistemaImpl.getInstance().ordenarNombre(); 
+	        actualizarVistaColeccion(panelCartasVisual);    
+	    });
+
+	    btnRareza.addActionListener(e -> {
+	        SistemaImpl.getInstance().ordenarRareza(); 
+	        actualizarVistaColeccion(panelCartasVisual);
+	    });
+
+	    btnPoder.addActionListener(e -> {
+	        SistemaImpl.getInstance().ordenarPoder();  
+	        actualizarVistaColeccion(panelCartasVisual);
+	    });
+	    
+	    barraOrden.add(new JLabel("Ordenar por:"));
+	    barraOrden.add(btnNombre);
+	    barraOrden.add(btnRareza);
+	    barraOrden.add(btnPoder);
+
+	    actualizarVistaColeccion(panelCartasVisual);
+
+	    JScrollPane scroll = new JScrollPane(panelCartasVisual);
+	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    
+	    panelPrincipal.add(barraOrden, BorderLayout.NORTH);
+	    panelPrincipal.add(scroll, BorderLayout.CENTER);
+	    
+	    return panelPrincipal; 
 	}
 	private JPanel crearPanelAdmin() {
 	    JPanel panel = new JPanel();
@@ -61,61 +101,136 @@ public class VentanaPrincipal extends JFrame {
 	        }
 	        if (linea != null && !linea.isEmpty()) {
 	            SistemaImpl.getInstance().crearCarta(linea);
+	            actualizarVistaColeccion(panelCartasVisual);
 	            JOptionPane.showMessageDialog(this, "Carta agregada exitosamente.");
 	        }
 	    	} catch (Exception ex) {
 	    		JOptionPane.showMessageDialog(this, "Entrada invalida, intente otra vez.");
 	    	}
 	    });
-
+	    
+	    btnEliminar.addActionListener(e -> {
+	        String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la carta a eliminar:");
+	        if (nombre != null) {
+	            boolean eliminado = SistemaImpl.getInstance().eliminarCarta(nombre);
+	            if (eliminado) {
+	                JOptionPane.showMessageDialog(this, "Carta eliminada.");
+	                actualizarVistaColeccion(panelCartasVisual);
+	            } else {
+	                JOptionPane.showMessageDialog(this, "Carta no encontrada.");
+	            }
+	        }
+	    });
+	    
+	    btnModificar.addActionListener(e -> {
+	        String nombre = JOptionPane.showInputDialog("Nombre de la carta a modificar:");
+	        Carta c = SistemaImpl.getInstance().buscarCarta(nombre);
+	        
+	        if (c != null) {
+	        	try {
+	            if (c instanceof Pokemon) {
+	                int nuevoDmg = Integer.parseInt(JOptionPane.showInputDialog("Nuevo daño:"));
+	                int nuevaCantEnergias = Integer.parseInt(JOptionPane.showInputDialog("Nueva cantidad de energia:"));
+	                ((Pokemon) c).setDmg(nuevoDmg);
+	                ((Pokemon) c).setEnergias(nuevaCantEnergias);
+	                actualizarVistaColeccion(panelCartasVisual);
+		            JOptionPane.showMessageDialog(this, "Atributos modificados.");
+	            } else if (c instanceof Item) {
+	                int nuevoBuff = Integer.parseInt(JOptionPane.showInputDialog("Nueva bonificación:"));
+	                ((Item) c).setBuff(nuevoBuff);
+	                actualizarVistaColeccion(panelCartasVisual);
+		            JOptionPane.showMessageDialog(this, "Atributos modificados.");
+	            } else if (c instanceof Supporter) {
+	            	int nuevoEfectosPorTurno = Integer.parseInt(JOptionPane.showInputDialog("Nuevo efectos por turno:"));
+	                ((Supporter) c).setEfectoPorTurno(nuevoEfectosPorTurno);
+	                actualizarVistaColeccion(panelCartasVisual);
+		            JOptionPane.showMessageDialog(this, "Atributos modificados.");
+	            } else if (c instanceof Energy) {
+	            	String elemento = JOptionPane.showInputDialog("Nuevo elemento:");
+	            	((Energy) c).setElemento(elemento);
+	            	actualizarVistaColeccion(panelCartasVisual);
+		            JOptionPane.showMessageDialog(this, "Atributos modificados.");
+	            }
+	        	} catch (Exception ex) {
+	        		JOptionPane.showMessageDialog(this, "entrada invalida, intente de nuevo.");
+	        	}
+	        } else {
+	        	JOptionPane.showMessageDialog(this, "Carta no encontrada.");
+	        }
+	    });
+	    
 	    panel.add(btnAgregar);
 	    panel.add(btnEliminar);
 	    panel.add(btnModificar);
-	    
 	    return panel;
 	}
 	private void actualizarVistaColeccion(JPanel panelCartas) {
-	    panelCartas.removeAll(); // Paso 1: Limpiar [8]
+	    panelCartas.removeAll(); 
 	    
-	    // Obtener la colección (necesitarás un getter en tu SistemaImpl)
-	    for (Carta c : SistemaImpl.getInstance().getColeccion()) {
+	    SistemaImpl.getInstance();
+		
+	    for (Carta c : SistemaImpl.getColeccion()) {
 	        panelCartas.add(crearMiniaturaCarta(c));
 	    }
-
-	    panelCartas.revalidate(); // Paso 2: Recalcular layout
-	    panelCartas.repaint();    // Paso 3: Redibujar
+	    panelCartas.revalidate(); 
+	    panelCartas.repaint();    
 	}
+	
 	private JPanel crearMiniaturaCarta(Carta carta) {
-	    JPanel mini = new JPanel();
-	    mini.add(new JLabel(carta.getNombre()));
+		JPanel mini = new JPanel();
+	    mini.setLayout(new BoxLayout(mini, BoxLayout.Y_AXIS)); 
 
+	    ImageIcon iconoOriginal = obtenerImagen(carta.getNombre());
+	    
+	    
+	    Image imgEscalada = iconoOriginal.getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+	    ImageIcon iconoFinal = new ImageIcon(imgEscalada);
+ 
+	    JLabel labelImagen = new JLabel(iconoFinal);
+	    mini.add(new JLabel(carta.getNombre()));
+	    mini.add(labelImagen);
+	    
 	    mini.addMouseListener(new MouseAdapter() {
-	        @Override
+	     
 	        public void mouseClicked(MouseEvent e) {
-	            
 	            JDialog detalle = new JDialog();
 	            detalle.setTitle("Detalle: " + carta.getNombre());
 	            detalle.setSize(300, 400);
-	            
-	            
+	            detalle.setLayout(new BorderLayout());
+
+	            JLabel imagenGrande = new JLabel(obtenerImagen(carta.getNombre()));
+	            detalle.add(imagenGrande, BorderLayout.CENTER);
 	            int poder = carta.aceptarVisita(new CalculadorPoder());
-	            detalle.add(new JLabel("Poder Calculado: " + poder), BorderLayout.SOUTH);
-	            
-	            detalle.setVisible(true);
+	            if (carta instanceof Pokemon) {
+	            	Pokemon p = (Pokemon) SistemaImpl.getInstance().buscarCarta(carta.getNombre());
+	            	detalle.add(new JLabel("<html>Nombre: "+ p.getNombre() + "<br>" + "tipo: "+ p.getTipo() + "<br>" + "rareza: "+ p.getRareza() + "<br>" + "daño: "+ p.getDmg() + "<br>"+ "cantidad de energias: " + p.getEnergias() + "<br>" + "Poder Calculado: " + poder+"</html>"), BorderLayout.SOUTH);
+	            	 detalle.setVisible(true);
+	            } else if (carta instanceof Item) {
+	            	Item i = (Item) SistemaImpl.getInstance().buscarCarta(carta.getNombre());
+	            	detalle.add(new JLabel("<html>Nombre: "+ i.getNombre() + "<br>" + "tipo: "+ i.getTipo() + "<br>" + "rareza: "+ i.getRareza() + "<br>" + "buff: "+ i.getBuff() + "<br>" + "Poder Calculado: " + poder+"</html>"), BorderLayout.SOUTH);
+	            	 detalle.setVisible(true);
+	            } else if (carta instanceof Supporter) {
+	            	Supporter s = (Supporter) SistemaImpl.getInstance().buscarCarta(carta.getNombre());
+	            	detalle.add(new JLabel("<html>Nombre: "+ s.getNombre() + "<br>" + "tipo: "+ s.getTipo() + "<br>" + "rareza: "+ s.getRareza() + "<br>" + "efectos por turno: "+ s.getEfectoPorTurno() + "<br>" + "Poder Calculado: " + poder+"</html>"), BorderLayout.SOUTH);
+	            	detalle.setVisible(true);
+	            } else if (carta instanceof Energy) {
+	            	Energy en = (Energy) SistemaImpl.getInstance().buscarCarta(carta.getNombre());
+	            	detalle.add(new JLabel("<html>Nombre: "+ en.getNombre() + "<br>" + "tipo: "+ en.getTipo() + "<br>" + "rareza: "+ en.getRareza() + "<br>" + "elemento: "+ en.getElemento() + "<br>" + "Poder Calculado: " + poder+"</html>"), BorderLayout.SOUTH);
+	            	detalle.setVisible(true);
+	            }
 	        }
+
 	    });
 	    return mini;
 	}
 	private ImageIcon obtenerImagen(String nombreCarta) {
-	    // Intenta buscar la imagen específica
 	    String rutaCarta = "imagenes/" + nombreCarta + ".png";
 	    File file = new File(rutaCarta);
 
 	    if (file.exists()) {
 	        return new ImageIcon(rutaCarta);
 	    } else {
-	        // Usa la que vimos en tu captura de pantalla
-	        return new ImageIcon("/Taller4BP/imagenes/default_card.png");
+	    	return new ImageIcon("imagenes/default_card.png");
 	    }
 	}
 }
