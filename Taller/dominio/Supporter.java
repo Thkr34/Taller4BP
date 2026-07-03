@@ -30,4 +30,10 @@ public class Supporter extends Carta {
 	public void setEfectoPorTurno(int efectoPorTurno) {
 		this.efectoPorTurno = efectoPorTurno;
 	}
+
+	@Override
+	public String convertirLinea() {
+		String linea = this.nombre + ";" + this.rareza + ";" + this.tipo + ";" + this.efectoPorTurno;
+		return linea;
+	}
 }

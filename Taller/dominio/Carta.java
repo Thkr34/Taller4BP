@@ -34,6 +34,6 @@ public abstract class Carta {
 	}
 	
 	public abstract int aceptarVisita(Visitor v);
-	
+	public abstract String convertirLinea();
 	
 }

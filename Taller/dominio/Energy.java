@@ -31,4 +31,10 @@ public class Energy extends Carta {
 	public void setElemento(String elemento) {
 		this.elemento = elemento;
 	}
+
+	@Override
+	public String convertirLinea() {
+		String linea = this.nombre + ";" + this.rareza + ";" + this.tipo + ";" + this.elemento;
+		return linea;
+	}
 }

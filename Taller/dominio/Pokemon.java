@@ -40,4 +40,10 @@ public class Pokemon extends Carta {
 	public void setEnergias(int energias) {
 		this.energias = energias;
 	}
+
+	@Override
+	public String convertirLinea() {
+		String linea = this.nombre + ";" + this.rareza + ";" + this.tipo + ";" + this.dmg + ";" + this.energias;
+		return linea;
+	}
 }

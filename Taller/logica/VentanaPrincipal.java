@@ -10,7 +10,18 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import javax.swing.*;
+
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+
 import Visitor.CalculadorPoder;
 import dominio.*;
 
@@ -103,6 +114,7 @@ public class VentanaPrincipal extends JFrame {
 	            SistemaImpl.getInstance().crearCarta(linea);
 	            actualizarVistaColeccion(panelCartasVisual);
 	            JOptionPane.showMessageDialog(this, "Carta agregada exitosamente.");
+	            ActualizadorArchivos.getInstance().sobreEscribirSobres(SistemaImpl.getInstance().getColeccion());
 	        }
 	    	} catch (Exception ex) {
 	    		JOptionPane.showMessageDialog(this, "Entrada invalida, intente otra vez.");
@@ -115,6 +127,7 @@ public class VentanaPrincipal extends JFrame {
 	            boolean eliminado = SistemaImpl.getInstance().eliminarCarta(nombre);
 	            if (eliminado) {
 	                JOptionPane.showMessageDialog(this, "Carta eliminada.");
+	                ActualizadorArchivos.getInstance().sobreEscribirSobres(SistemaImpl.getInstance().getColeccion());
 	                actualizarVistaColeccion(panelCartasVisual);
 	            } else {
 	                JOptionPane.showMessageDialog(this, "Carta no encontrada.");
@@ -135,21 +148,25 @@ public class VentanaPrincipal extends JFrame {
 	                ((Pokemon) c).setEnergias(nuevaCantEnergias);
 	                actualizarVistaColeccion(panelCartasVisual);
 		            JOptionPane.showMessageDialog(this, "Atributos modificados.");
+		            ActualizadorArchivos.getInstance().sobreEscribirSobres(SistemaImpl.getInstance().getColeccion());
 	            } else if (c instanceof Item) {
 	                int nuevoBuff = Integer.parseInt(JOptionPane.showInputDialog("Nueva bonificación:"));
 	                ((Item) c).setBuff(nuevoBuff);
 	                actualizarVistaColeccion(panelCartasVisual);
 		            JOptionPane.showMessageDialog(this, "Atributos modificados.");
+		            ActualizadorArchivos.getInstance().sobreEscribirSobres(SistemaImpl.getInstance().getColeccion());
 	            } else if (c instanceof Supporter) {
 	            	int nuevoEfectosPorTurno = Integer.parseInt(JOptionPane.showInputDialog("Nuevo efectos por turno:"));
 	                ((Supporter) c).setEfectoPorTurno(nuevoEfectosPorTurno);
 	                actualizarVistaColeccion(panelCartasVisual);
 		            JOptionPane.showMessageDialog(this, "Atributos modificados.");
+		            ActualizadorArchivos.getInstance().sobreEscribirSobres(SistemaImpl.getInstance().getColeccion());
 	            } else if (c instanceof Energy) {
 	            	String elemento = JOptionPane.showInputDialog("Nuevo elemento:");
 	            	((Energy) c).setElemento(elemento);
 	            	actualizarVistaColeccion(panelCartasVisual);
 		            JOptionPane.showMessageDialog(this, "Atributos modificados.");
+		            ActualizadorArchivos.getInstance().sobreEscribirSobres(SistemaImpl.getInstance().getColeccion());
 	            }
 	        	} catch (Exception ex) {
 	        		JOptionPane.showMessageDialog(this, "entrada invalida, intente de nuevo.");

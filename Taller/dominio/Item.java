@@ -31,4 +31,10 @@ public class Item extends Carta {
 	public void setBuff(int buff) {
 		this.buff = buff;
 	}
+
+	@Override
+	public String convertirLinea() {
+		String linea = this.nombre + ";" + this.rareza + ";" + this.tipo + ";" + this.buff;
+		return linea;
+	}
 }
