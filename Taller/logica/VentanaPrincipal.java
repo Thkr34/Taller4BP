@@ -210,12 +210,17 @@ public class VentanaPrincipal extends JFrame {
 	    mini.addMouseListener(new MouseAdapter() {
 	     
 	        public void mouseClicked(MouseEvent e) {
-	            JDialog detalle = new JDialog();
+	        	JDialog detalle = new JDialog();
 	            detalle.setTitle("Detalle: " + carta.getNombre());
-	            detalle.setSize(300, 400);
+	            detalle.setSize(500, 600); 
 	            detalle.setLayout(new BorderLayout());
 
-	            JLabel imagenGrande = new JLabel(obtenerImagen(carta.getNombre()));
+	            ImageIcon iconoOriginal = obtenerImagen(carta.getNombre());
+	   
+	            Image imgEscalada = iconoOriginal.getImage().getScaledInstance(400, 475, Image.SCALE_SMOOTH);
+	            ImageIcon iconoDetalle = new ImageIcon(imgEscalada);
+	            
+	            JLabel imagenGrande = new JLabel(iconoDetalle);
 	            detalle.add(imagenGrande, BorderLayout.CENTER);
 	            int poder = carta.aceptarVisita(new CalculadorPoder());
 	            if (carta instanceof Pokemon) {
